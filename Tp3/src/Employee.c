@@ -10,12 +10,28 @@ static int esNumerica(char* cadena, int limite);
 static int isValidNombre(char* cadena,int longitud);
 
 
+
+/**
+ * \brief crea espacio en memoria para un empelado
+ * \return Retorna NULL si no encontro el espacio o el puntero a ese espacio si pudo encontrarlo.
+ */
 Employee* employee_new(void)
 {
 	Employee* auxiliarEmpleado = NULL;
-	auxiliarEmpleado = (Employee*) malloc(sizeof(Employee));
+	
+	auxiliarEmpleado = (Employee*) malloc(sizeof(Employee)); //creo un espacio de memoria del tamaño de un empleado.
+	
 	return auxiliarEmpleado;
 }
+
+/**
+ * \brief crea un empleado en memoria
+ * \param idStr id del empleado
+ * \param nombre del empleado
+ * \param horas que trabaja
+ * \param sueldo del empleado
+ * \return Retorna NULL si no pudo crear el empleado, o la direccion de memoria en caso que pueda cargar el empleado.
+ */
 Employee* employee_newParametrosTxt(char* idStr,char* nombreStr,char* horasTrabajadasStr,char* sueldoStr)
 {
     Employee* punteroEmpleado = NULL;
@@ -101,6 +117,7 @@ int employee_imprimir(Employee* this)
 }
 
 // SET Y GET
+
 int employee_setId(Employee* this,int id)
 {
 	int retorno = -1;
@@ -111,6 +128,8 @@ int employee_setId(Employee* this,int id)
 		}
 		return retorno;
 }
+
+
 int employee_setIdStr(Employee* this,char* id)
 {
 	int retorno = -1;
@@ -124,6 +143,7 @@ int employee_setIdStr(Employee* this,char* id)
 	}
 return retorno;
 }
+
 int employee_getId(Employee* this,int* id)
 {
 	int retorno = -1;
@@ -134,6 +154,7 @@ int employee_getId(Employee* this,int* id)
 	}
 	return retorno;
 }
+
 int employee_getIdStr(Employee* this,char* id)
 {
 	int retorno = -1;
@@ -144,6 +165,7 @@ int employee_getIdStr(Employee* this,char* id)
 	}
 		return retorno;
 }
+
 int employee_setNombre(Employee* this,char* nombre)
 {
 	int retorno = -1;
@@ -157,6 +179,7 @@ int employee_setNombre(Employee* this,char* nombre)
 		}
 		return retorno;
 }
+
 int employee_getNombre(Employee* this,char* nombre)
 {
 	int retorno = -1;
@@ -167,6 +190,7 @@ int employee_getNombre(Employee* this,char* nombre)
 	}
 	return retorno;
 }
+
 int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
 {
    int retorno = -1;
@@ -177,6 +201,7 @@ int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
    		}
    		return retorno;
 }
+
 int employee_setHorasTrabajadasStr(Employee* this,char* horasTrabajadas)
 {
 	int retorno = -1;
@@ -190,6 +215,7 @@ int employee_setHorasTrabajadasStr(Employee* this,char* horasTrabajadas)
 	}
 	   return retorno;
 }
+
 int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 {
 	int retorno = -1;
@@ -200,6 +226,7 @@ int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 	}
 	return retorno;
 }
+
 int employee_getHorasTrabajadasStr(Employee* this,char* horasTrabajadas)
 {
 	int retorno = -1;
@@ -210,6 +237,7 @@ int employee_getHorasTrabajadasStr(Employee* this,char* horasTrabajadas)
 	}
 		   return retorno;
 }
+
 int employee_setSueldo(Employee* this,int sueldo)
 {
 	int retorno = -1;
@@ -220,6 +248,7 @@ int employee_setSueldo(Employee* this,int sueldo)
 	   }
 	return retorno;
 }
+
 int employee_setSueldoStr(Employee* this,char* sueldo)
 {
     int retorno = -1;
@@ -233,6 +262,7 @@ int employee_setSueldoStr(Employee* this,char* sueldo)
 	}
 	   return retorno;
 }
+
 int employee_getSueldo(Employee* this,int* sueldo)
 {
 	int retorno = -1;
@@ -243,6 +273,7 @@ int employee_getSueldo(Employee* this,int* sueldo)
 		}
 		return retorno;
 }
+
 int employee_getSueldoStr(Employee* this,char* sueldo)
 {
 	int retorno = -1;
@@ -254,6 +285,8 @@ int employee_getSueldoStr(Employee* this,char* sueldo)
 		return retorno;
 }
 
+/***********************************/
+//Statics para validad
 
 static int esNumerica(char* cadena, int limite)
 {
@@ -314,13 +347,13 @@ int Employee_funcionCriterio (void* item1, void* item2)
 	int sueldo1;
 	int sueldo2;
 
-	empleado1= (Employee*)item1;
+	empleado1= (Employee*)item1;  //guardo mi puntero a void en una variable del tipo empleado* para acceder a sus campos.
 	empleado2=(Employee*)item2;
 
 	if(item1 != NULL && item2 != NULL)
 	{
-		if(employee_getSueldo(empleado1,&sueldo1)==0 &&
-			employee_getSueldo(empleado2,&sueldo2) == 0)
+		if(employee_getSueldo(empleado1,&sueldo1)==0 &&  // leo sueldo del puntero a empleado.
+			employee_getSueldo(empleado2,&sueldo2) == 0) // leo sueldo del puntero a empleado.
 			{
 				if(sueldo1>sueldo2)
 				{
@@ -330,7 +363,7 @@ int Employee_funcionCriterio (void* item1, void* item2)
 				{
 					retorno=-1; //sueldo2 es mayor
 				}
-				if(sueldo1==sueldo2)
+				if(sueldo1==sueldo2) // sueldos iguales.
 				{
 					retorno=0;
 				}

@@ -25,8 +25,8 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 	    	pFile = fopen(path,"r");  //abro archivo para lectura de texto.
 	    		if(pFile != NULL && !parser_EmployeeFromText(pFile, pArrayListEmployee))
 				{
-	    			empleadosCargados = parser_EmployeeFromText(pFile, pArrayListEmployee);  // cuento cuantos empleados pude parsear.
-					printf("Empleados cargados: %d \n", empleadosCargados); //imprimo la cantidad de empleados caregados
+	    			empleadosCargados = parser_EmployeeFromText(pFile, pArrayListEmployee);  // cuento cuantos empleados pude parsear y se lo doy a un auxiliar.
+					printf("Empleados cargados: %d \n", empleadosCargados); //imprimo la cantidad de empleados caregados con mi auxiliar
 					retorno = 0;
 				}
 				else
@@ -77,7 +77,7 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 
 /** \brief Alta de empleados
  * \param pArrayListEmployee LinkedList*
- * \return int
+ * \return int 0 en caso de exito, y 1 si fallo.
  *
  */
 int controller_addEmployee(LinkedList* pArrayListEmployee)
@@ -91,16 +91,16 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 
 	if(pArrayListEmployee != NULL)
 	{
-		if(	utn_getNombre(bufferNombre,128,"ingrese nombre: \n", "nombre incorrecto \n", 2) == 0 &&
-				utn_getNumero(&bufferSueldo,"ingrese sueldo: \n", "sueldo incorrecto \n",1,100000,2) ==0 &&
+		if(	utn_getNombre(bufferNombre,128,"ingrese nombre: \n", "nombre incorrecto \n", 2) == 0 && 
+				utn_getNumero(&bufferSueldo,"ingrese sueldo: \n", "sueldo incorrecto \n",1,100000,2) ==0 &&  
 				utn_getNumero(&bufferHorasTrabajadas, "ingrese horas trabajadas:\n","formato horas incorrecto\n",1,500,2) == 0 &&
-				idMaximo(pArrayListEmployee,&id) ==0)
+				idMaximo(pArrayListEmployee,&id) ==0) // hice funcion para encontrar el ID maximo.
 			{
-				id=id+1;
-				empleado=employee_newParametros(id,bufferNombre,bufferHorasTrabajadas,bufferSueldo);
+				id=id+1;  // al ID maximo que me dio la funcion le sumo uno y se lo asigno al proximo empleado.
+				empleado=employee_newParametros(id,bufferNombre,bufferHorasTrabajadas,bufferSueldo);  // cargo un empleado en memoria.
 				if(empleado!=NULL)
 				{
-					ll_add(pArrayListEmployee, empleado);
+					ll_add(pArrayListEmployee, empleado);  // añado su puntero a la lista,
 					printf("alta OK \n");
 				}
 				retorno=0;
@@ -115,7 +115,7 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 
 /** \brief Modificar datos de empleado
  * \param pArrayListEmployee LinkedList*
- * \return int
+ * \return int 0 en caso de exito y -1 si fallo.
  *
  */
 int controller_editEmployee(LinkedList* pArrayListEmployee)
@@ -130,7 +130,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 
 if(pArrayListEmployee != NULL)
 {
-	if(utn_getNumero(&id,"ingrese ID del empleado a modificar:\n", "error\n", 0,100000,2) == 0) //ingreso ide
+	if(utn_getNumero(&id,"ingrese ID del empleado a modificar:\n", "error\n", 0,100000,2) == 0) //ingreso id
 	{
 		for(i=0;i<ll_len(pArrayListEmployee);i++) //recorro listo
 		{
@@ -142,9 +142,9 @@ if(pArrayListEmployee != NULL)
 					utn_getNumero(&bufferSueldo,"ingrese sueldo: \n", "sueldo incorrecto \n",1,100000,2) ==0 &&
 					utn_getNumero(&bufferHorasTrabajadas, "ingrese horas trabajadas:\n","formato horas incorrecto\n",1,1000,2) == 0)
 					{ //si todo esta ok, modifico
-							employee_setNombre(empleado,bufferNombre);
-							employee_setSueldo(empleado,bufferSueldo);
-							employee_setHorasTrabajadas(empleado,bufferHorasTrabajadas);
+							employee_setNombre(empleado,bufferNombre); // escribo los nuevos campos.
+							employee_setSueldo(empleado,bufferSueldo);// escribo los nuevos campos.
+							employee_setHorasTrabajadas(empleado,bufferHorasTrabajadas); // escribo los nuevos campos.
 					    	printf("modificacion OK \n");
 					    	break;
 					    	retorno=0;
@@ -271,27 +271,27 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 	if(pArchivo != NULL)
 	{
 
-		for(i=0;i<ll_len(pArrayListEmployee);i++)
+		for(i=0;i<ll_len(pArrayListEmployee);i++) // recorro la lista
 		{
-			pEmpleado=ll_get(pArrayListEmployee,i);
+			pEmpleado=ll_get(pArrayListEmployee,i); // leo una posicion de un empleado
 			if(pEmpleado != NULL)
 			{
-				employee_getId(pEmpleado,&auxiliarId);
-				employee_getNombre(pEmpleado,auxiliarNombre);
-				employee_getHorasTrabajadas(pEmpleado,&auxiliarHorasTrabajadas);
-				employee_getSueldo(pEmpleado,&auxiliarSueldo);
+				employee_getId(pEmpleado,&auxiliarId); // leo sus campos y los guardo en un buffer
+				employee_getNombre(pEmpleado,auxiliarNombre);// leo sus campos y los guardo en un buffer
+				employee_getHorasTrabajadas(pEmpleado,&auxiliarHorasTrabajadas);// leo sus campos y los guardo en un buffer
+				employee_getSueldo(pEmpleado,&auxiliarSueldo);// leo sus campos y los guardo en un buffer
 
 			}
-			fprintf(pArchivo,"%d,%s,%d,%d \n",auxiliarId,auxiliarNombre,auxiliarHorasTrabajadas,auxiliarSueldo);
+			fprintf(pArchivo,"%d,%s,%d,%d \n",auxiliarId,auxiliarNombre,auxiliarHorasTrabajadas,auxiliarSueldo); // escribo en el archivo los valores obtenidos del buffer
 		}
 
 		printf("guardado ok \n");
 	}
 	else
 	{
-		printf("El archivo no se puede guardar.\n");
+		printf("El archivo no se puede guardar.\n"); // mensaje si no se puede abrir archivo.
 	}
-	fclose(pArchivo);
+	fclose(pArchivo); // cierro archivo
     return retorno;
 }
 
@@ -310,15 +310,16 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 	Employee* pEmpleado;
 	int i;
 
-	pArchivo=fopen(path,"wb");
+	pArchivo=fopen(path,"wb");  // abro para escribir en un archivo binario
+	
 
 	if(pArchivo != NULL)
 	{
 
-		for(i=0;i<ll_len(pArrayListEmployee);i++)
+		for(i=0;i<ll_len(pArrayListEmployee);i++) // recorro la lista
 		{
-			pEmpleado=ll_get(pArrayListEmployee,i);
-			fwrite(pEmpleado,sizeof(Employee),1,pArchivo);
+			pEmpleado=ll_get(pArrayListEmployee,i); // obtengo el puntero a un empleaado
+			fwrite(pEmpleado,sizeof(Employee),1,pArchivo); // lo escribo en el archivo, de a 1 empelado leido y del tamaño de un empleado.
 		}
 		printf("guardado ok \n");
 	}
@@ -327,12 +328,12 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 		printf("El archivo no se puede guardar.\n");
 	}
 
-	fclose(pArchivo);
+	fclose(pArchivo); // cierro archivo.
 
     return retorno;
 }
 
-static int idMaximo(LinkedList* pArrayListEmployee, int* idMaximo)
+static int idMaximo(LinkedList* pArrayListEmployee, int* idMaximo) // funcion para obtener el maximo ID
 {
 	int retorno=-1;
 	Employee* auxEmpleado;
@@ -342,12 +343,12 @@ static int idMaximo(LinkedList* pArrayListEmployee, int* idMaximo)
 	if(pArrayListEmployee != NULL && idMaximo != NULL)
 	{
 		retorno=0;
-		for(i=0; i<ll_len(pArrayListEmployee);i++)
+		for(i=0; i<ll_len(pArrayListEmployee);i++) // recorro la lista
 		{
-			auxEmpleado=ll_get(pArrayListEmployee,i);
-			if(auxEmpleado!=NULL && auxEmpleado->id>auxId)
+			auxEmpleado=ll_get(pArrayListEmployee,i); // leo los ID y almaceno
+			if(auxEmpleado!=NULL && auxEmpleado->id>auxId) // los comparo con un maximo (que arranca en un -1). Hice esto suponiendo que siempre primero se carga la lista como habiamos mencionado en clase.
 			{
-				*idMaximo=auxEmpleado->id;
+				*idMaximo=auxEmpleado->id; // leo el ID del empleado y lo guardo en el maximo.
 			}
 		}
 	}

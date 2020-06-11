@@ -20,18 +20,18 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 		int cantidadEmpleados = 0;
 
 
-		if(pFile != NULL && pArrayListEmployee != NULL)
+		if(pFile != NULL && pArrayListEmployee != NULL) 
 		{
 			do
 			 {
-				if(fscanf(pFile,"%[^,],%[^,],%[^,],%[^\n]\n",auxiliarId,auxiliarNombre,auxiliarHsTrabajadas,auxiliarSueldo)== 4)
+				if(fscanf(pFile,"%[^,],%[^,],%[^,],%[^\n]\n",auxiliarId,auxiliarNombre,auxiliarHsTrabajadas,auxiliarSueldo)== 4) // leo cuatro variables del archivo en modo texto.
 					{
-				       auxiliarEmpleado = employee_newParametrosTxt(auxiliarId,auxiliarNombre,auxiliarHsTrabajadas,auxiliarSueldo);
+				       auxiliarEmpleado = employee_newParametrosTxt(auxiliarId,auxiliarNombre,auxiliarHsTrabajadas,auxiliarSueldo); //cargo un empleado a memoria
 					    if(auxiliarEmpleado != NULL)
 					    {
-							if(!ll_add(pArrayListEmployee,auxiliarEmpleado))
+							if(!ll_add(pArrayListEmployee,auxiliarEmpleado)) // añado ese empleado en memoria a la lista (cargo su direcccion de memoria)
 							{
-								cantidadEmpleados++;
+								cantidadEmpleados++; // sirve para contar los empleados que cargue.
 							}
 		                 }
 						else
@@ -40,8 +40,8 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 						}
 
 					}
-			  }while(!feof(pFile));
-              retorno = cantidadEmpleados;
+			  }while(!feof(pFile)); // hasta que el archivo termine.
+              retorno = cantidadEmpleados; // retorno cantidad de empleados cargados.
 		  }
 				return retorno;
 }
@@ -51,7 +51,6 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
  * \param path char*
  * \param pArrayListEmployee LinkedList*
  * \return int
- *
  */
 int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 {
